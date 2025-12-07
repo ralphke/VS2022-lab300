@@ -1,4 +1,5 @@
 using DataEntities;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.DependencyInjection;
 using Store.Services;
 
@@ -123,6 +124,38 @@ public class CartWorkflowTests
                 Assert.Equal(15.00m * (i + 1), cart.GetTotal());
             }
             // Scope disposed - cart should be cleaned up
+        }
+    }
+
+    [Fact]
+    public void ServiceRegistrations_CanResolveCartServiceAndCircuitHandler()
+    {
+        // Arrange - Create a service collection matching Store app configuration
+        var services = new ServiceCollection();
+        services.AddScoped<CartService>();
+        services.AddSingleton<CircuitHandler, CartCircuitHandler>();
+        var serviceProvider = services.BuildServiceProvider();
+
+        // Act & Assert - Verify CartCircuitHandler can be resolved as singleton
+        var circuitHandler1 = serviceProvider.GetServices<CircuitHandler>().OfType<CartCircuitHandler>().FirstOrDefault();
+        var circuitHandler2 = serviceProvider.GetServices<CircuitHandler>().OfType<CartCircuitHandler>().FirstOrDefault();
+        
+        Assert.NotNull(circuitHandler1);
+        Assert.NotNull(circuitHandler2);
+        Assert.Same(circuitHandler1, circuitHandler2); // Should be same instance (singleton)
+
+        // Verify CartService can be resolved as scoped
+        using (var scope1 = serviceProvider.CreateScope())
+        using (var scope2 = serviceProvider.CreateScope())
+        {
+            var cart1a = scope1.ServiceProvider.GetRequiredService<CartService>();
+            var cart1b = scope1.ServiceProvider.GetRequiredService<CartService>();
+            var cart2 = scope2.ServiceProvider.GetRequiredService<CartService>();
+
+            Assert.NotNull(cart1a);
+            Assert.NotNull(cart2);
+            Assert.Same(cart1a, cart1b); // Same scope should return same instance
+            Assert.NotSame(cart1a, cart2); // Different scopes should return different instances
         }
     }
 }
