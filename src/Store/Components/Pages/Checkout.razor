@@ -1,0 +1,92 @@
+@page "/checkout"
+@using DataEntities
+@inject NavigationManager NavigationManager
+@inject Store.Services.CartService CartService
+
+<PageTitle>Checkout - TinyShop</PageTitle>
+
+<div class="container-fluid">
+    <h1>Checkout</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Shipping Information</h5>
+                    <EditForm Model="customer" OnValidSubmit="PlaceOrder">
+                        <DataAnnotationsValidator />
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <InputText id="name" class="form-control" @bind-Value="customer.Name" />
+                            <ValidationMessage For="() => customer.Name" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <InputText id="email" class="form-control" @bind-Value="customer.Email" />
+                            <ValidationMessage For="() => customer.Email" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <InputTextArea id="address" class="form-control" @bind-Value="customer.Address" />
+                            <ValidationMessage For="() => customer.Address" />
+                        </div>
+                        <button type="submit" class="btn btn-success">Place Order</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Order Summary</h5>
+                    @if (!CartService.GetItems().Any())
+                    {
+                        <div class="alert alert-warning">Your cart is empty. <a href="/products">Go back to shopping</a>.</div>
+                    }
+                    else
+                    {
+                        @foreach (var item in CartService.GetItems())
+                        {
+                            <div class="d-flex justify-content-between">
+                                <span>@item.Product.Name (x@item.Quantity)</span>
+                                <span>@(item.Product.Price * item.Quantity).ToString("C")</span>
+                            </div>
+                        }
+                        <hr />
+                        <div class="d-flex justify-content-between">
+                            <strong>Total</strong>
+                            <strong>@CartService.GetTotal().ToString("C")</strong>
+                        </div>
+                        <div class="mt-2">
+                            <button class="btn btn-sm btn-outline-danger me-2" @onclick="ClearCart">Clear Cart</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private Customer customer = new();
+
+    private void PlaceOrder()
+    {
+        // Simulate order placement
+        Console.WriteLine($"Order placed for {customer.Name}, Total: {CartService.GetTotal()}");
+        CartService.Clear();
+        NavigationManager.NavigateTo("/order-confirmation");
+    }
+
+    private void ClearCart()
+    {
+        CartService.Clear();
+    }
+
+    public class Customer
+    {
+        public string Name { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Address { get; set; } = "";
+    }
+}

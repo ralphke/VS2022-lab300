@@ -1,0 +1,50 @@
+name: CI
+
+on:
+ push:
+ branches: [ main ]
+ pull_request:
+ branches: [ main ]
+
+jobs:
+ test:
+ runs-on: ubuntu-latest
+
+ steps:
+ - name: Checkout repository
+ uses: actions/checkout@v4
+
+ - name: Setup .NET
+ uses: actions/setup-dotnet@v3
+ with:
+ dotnet-version: '9.0.x'
+
+ - name: Cache NuGet packages
+ uses: actions/cache@v4
+ with:
+ path: |
+ ~/.nuget/packages
+ ~/.local/share/NuGet
+ key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+ restore-keys: |
+ ${{ runner.os }}-nuget-
+
+ - name: Restore
+ run: dotnet restore
+
+ - name: Build
+ run: dotnet build --no-restore --configuration Release
+
+ - name: Run tests
+ run: dotnet test Tests/IntegrationTests/IntegrationTests.csproj --no-build --configuration Release --verbosity normal
+ env:
+ ASPNETCORE_ENVIRONMENT: Development
+
+ - name: Upload test results (if any)
+ if: always()
+ uses: actions/upload-artifact@v4
+ with:
+ name: test-results
+ path: |
+ **/TestResults
+ **/*.trx

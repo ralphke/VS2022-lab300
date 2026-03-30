@@ -1,20 +1,102 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+@using Store.Services
+@using DataEntities
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
 
-<PageTitle>Home</PageTitle>
+<PageTitle>TinyShop - Home</PageTitle>
 
-<h1>Home</h1>
+<div class="hero-section">
+    <div class="container">
+     <h1 class="display-4">Welcome to TinyShop!</h1>
+<p class="lead">The best e-commerce platform for outdoor enthusiasts</p>
+        <button class="btn btn-primary btn-lg" @onclick="NavigateToProducts">Shop Now</button>
+    </div>
+</div>
 
-<p>Welcome to the best e-commerce platform in the world - TinyShop!</p>
+<div class="container mt-5">
+    <h2 class="mb-4">Featured Products</h2>
+    
+    @if (isLoading)
+    {
+        <div class="text-center">
+      <div class="spinner-border" role="status">
+         <span class="visually-hidden">Loading...</span>
+     </div>
+     </div>
+    }
+    else if (featuredProducts.Count == 0)
+    {
+        <div class="alert alert-info">
+            <p>No products available yet.</p>
+            <p class="mb-0">
+    <strong>To see products with images (Scenario 2):</strong><br/>
+    1. Make sure the application is running<br/>
+    2. Run: <code>.\LoadImages.ps1</code> from Products/SQL folder<br/>
+        3. Refresh this page
+</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var product in featuredProducts)
+            {
+     <div class="col-md-4 mb-4">
+    <div class="card h-100 product-card-home">
+        <div class="card-img-container">
+   <img src="@ProductService.GetImageUrl(product)" 
+         class="card-img-top" 
+             alt="@product.Name"
+loading="lazy" />
+</div>
+            <div class="card-body d-flex flex-column">
+ <h5 class="card-title">@product.Name</h5>
+           <p class="card-text">@product.Description</p>
+     <div class="mt-auto">
+       <div class="d-flex justify-content-between align-items-center">
+     <span class="h5 mb-0 text-primary">@product.Price.ToString("C")</span>
+             <button class="btn btn-sm btn-outline-primary">View Details</button>
+        </div>
+        </div>
+</div>
+        </div>
+        </div>
+            }
+      </div>
 
-<button class="btn btn-primary" @onclick="NavigateToNonExistentPage">Go to About</button>
+        <div class="text-center mt-4">
+            <button class="btn btn-primary btn-lg" @onclick="NavigateToProducts">
+     View All Products
+            </button>
+        </div>
+    }
+</div>
 
 @code {
-    [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+    private List<Product> featuredProducts = new();
+    private bool isLoading = true;
 
-    private void NavigateToNonExistentPage()
+    protected override async Task OnInitializedAsync()
     {
-        NavigationManager.NavigateTo("/about");
+        try
+        {
+            // Get first 3 products as featured
+            featuredProducts = await ProductService.GetProductsPageAsync(3);
+    }
+catch (Exception ex)
+      {
+            Console.WriteLine($"Error loading featured products: {ex.Message}");
+    }
+    finally
+        {
+       isLoading = false;
+ }
+    }
+
+    private void NavigateToProducts()
+    {
+        NavigationManager.NavigateTo("/products");
     }
 }

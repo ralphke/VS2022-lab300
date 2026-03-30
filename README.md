@@ -9,8 +9,20 @@ This lab will guide you through using GitHub Copilot's various features in Visua
 ## Prerequisites
 
 - Visual Studio 2022 with GitHub Copilot extension installed
+- starting Visual Studio 2022 >= 17.13, GitHub Copilot is integrated with the VS Shell
 - .NET 9 SDK
 - GitHub account with Copilot subscription (including Free)
+- make sure your nuget packages match the requiements by running the following commnads in the T.\src folder
+- dotnet nuget locals all --clear
+- dotnet restore
+- This will make sure that your donet environment matches the project settings
+- Next you need your browser to trust the development certificates by executing the following command
+- dotnet dev-certs https --trust
+- now all should be setup to work as expected on your computer
+- To clean-up the environment, you can run the following command
+- dotnet dev-certs https --clean
+- This will remove all developer certificates from your machine
+
 
 ## Lab Overview
 

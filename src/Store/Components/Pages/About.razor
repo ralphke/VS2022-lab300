@@ -5,26 +5,26 @@
 
 <h1>About TinyShop</h1>
 
-<p>Loading page content...</p>
+@if (hasQueryParams)
+{
+    <p>Welcome to the About page. Query parameters detected.</p>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        This page requires query parameters to function properly. Please add some query parameters to the URL (e.g., <code>?param=value</code>).
+    </div>
+}
 
 @code {
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
 
-    private bool firstRender = true;
+    private bool hasQueryParams;
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override void OnInitialized()
     {
-        if (firstRender)
-        {
-            this.firstRender = false;
-            var uri = new Uri(NavigationManager.Uri);
-            var queryString = uri.Query;
-
-            if (string.IsNullOrEmpty(queryString))
-            {
-                throw new InvalidOperationException("This page requires query parameters to function properly. Please add some query parameters to the URL (e.g., ?param=value)");
-            }
-        }
+        var uri = new Uri(NavigationManager.Uri);
+        hasQueryParams = !string.IsNullOrEmpty(uri.Query);
     }
 }

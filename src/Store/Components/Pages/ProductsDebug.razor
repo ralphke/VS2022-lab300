@@ -1,0 +1,191 @@
+@page "/products/debug"
+@using Store.Services
+@using DataEntities
+@using System.Reflection
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Product Debug Info - TinyShop</PageTitle>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Product Debug Information</h1>
+<a href="/products" class="btn btn-sm btn-outline-primary">? Back to Products</a>
+    </div>
+
+    @if (isLoading)
+    {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+     </div>
+  </div>
+    }
+    else if (errorMessage != null)
+    {
+  <div class="alert alert-danger">
+   <h4>Error</h4>
+  <p>@errorMessage</p>
+   </div>
+    }
+    else if (products.Count == 0)
+    {
+ <div class="alert alert-warning">
+   <h4>No Products Found</h4>
+            <p>The product catalog is empty.</p>
+   <p><strong>For Scenario 2:</strong> Run <code>.\LoadImages.ps1</code> to load images.</p>
+        </div>
+    }
+    else
+    {
+      <div class="alert alert-info mb-4">
+            <h5>Configuration</h5>
+   <p><strong>API Base URL:</strong> <code>@GetBaseUrl()</code></p>
+<p><strong>Scenario:</strong> 2 (Database Serving via API Endpoint)</p>
+     <p><strong>Total Products:</strong> @products.Count</p>
+   <p class="mb-0">
+ <strong>Products with ImageData:</strong> 
+  @products.Count(p => p.ImageData != null && p.ImageData.Length > 0) / @products.Count
+            </p>
+ </div>
+
+      <div class="table-responsive">
+            <table class="table table-striped table-hover">
+     <thead class="table-dark">
+       <tr>
+       <th>ID</th>
+    <th>Name</th>
+       <th>ImageUrl</th>
+       <th>Has ImageData</th>
+    <th>ImageData Size</th>
+       <th>Generated URL</th>
+ <th>Preview</th>
+  </tr>
+            </thead>
+   <tbody>
+                @foreach (var product in products)
+     {
+   <tr>
+    <td>@product.Id</td>
+            <td>@product.Name</td>
+         <td>
+          @if (string.IsNullOrEmpty(product.ImageUrl))
+     {
+<span class="text-muted">NULL</span>
+      }
+   else
+    {
+      <code>@product.ImageUrl</code>
+           }
+</td>
+        <td>
+         @if (product.ImageData != null && product.ImageData.Length > 0)
+     {
+      <span class="badge bg-success">? Yes</span>
+           }
+    else
+    {
+       <span class="badge bg-danger">? No</span>
+  }
+        </td>
+       <td>
+    @if (product.ImageData != null && product.ImageData.Length > 0)
+           {
+     <span>@FormatBytes(product.ImageData.Length)</span>
+        }
+    else
+    {
+      <span class="text-muted">0 bytes</span>
+    }
+        </td>
+    <td><code class="small">@ProductService.GetImageUrl(product)</code></td>
+      <td>
+      <img src="@ProductService.GetImageUrl(product)" 
+         alt="@product.Name" 
+ style="max-width: 100px; max-height: 100px; border: 1px solid #ddd; padding: 2px;"
+             onerror="this.style.border='2px solid red'; this.title='Failed to load'" />
+    </td>
+       </tr>
+    }
+     </tbody>
+  </table>
+  </div>
+
+      <div class="alert alert-secondary mt-4">
+   <h5>Scenario 2 Verification</h5>
+   <ul class="mb-0">
+            <li><strong>Expected URL format:</strong> <code>.../api/Product/{'{'}id{'}'}/image</code></li>
+   <li><strong>ImageUrl should be:</strong> NULL (not used in Scenario 2)</li>
+      <li><strong>ImageData should be:</strong> Populated with binary PNG data</li>
+    <li><strong>Image endpoint:</strong> <a href="@GetApiDebugUrl()" target="_blank">@GetApiDebugUrl()</a></li>
+            </ul>
+        </div>
+
+        @if (products.Any(p => p.ImageData == null || p.ImageData.Length == 0))
+        {
+   <div class="alert alert-warning mt-3">
+     <h5>?? Missing Image Data</h5>
+     <p>Some products don't have ImageData loaded.</p>
+      <p class="mb-0">
+    <strong>To load images:</strong><br/>
+         1. Make sure Products API is running<br/>
+        2. Run: <code>cd Products\SQL && .\LoadImages.ps1</code><br/>
+     3. Refresh this page
+    </p>
+ </div>
+        }
+    }
+</div>
+
+@code {
+    private List<Product> products = new();
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+    {
+            products = await ProductService.GetProductsPageAsync(20);
+        }
+ catch (Exception ex)
+  {
+            errorMessage = ex.Message;
+         Console.WriteLine($"Error loading products: {ex.Message}");
+        }
+   finally
+{
+        isLoading = false;
+}
+    }
+
+    private string GetBaseUrl()
+    {
+   try
+   {
+      var httpClientField = typeof(ProductService)
+         .GetField("httpClient", BindingFlags.NonPublic | BindingFlags.Instance);
+          
+            if (httpClientField != null)
+      {
+   var httpClient = httpClientField.GetValue(ProductService) as HttpClient;
+           return httpClient?.BaseAddress?.ToString() ?? "Unknown";
+      }
+        }
+   catch { }
+        
+    return "Unable to determine";
+    }
+
+    private string GetApiDebugUrl()
+    {
+   return $"{GetBaseUrl()}api/Product/debug/images";
+    }
+
+    private string FormatBytes(long bytes)
+    {
+   if (bytes < 1024) return $"{bytes} B";
+   if (bytes < 1024 * 1024) return $"{bytes / 1024.0:F2} KB";
+        return $"{bytes / (1024.0 * 1024.0):F2} MB";
+    }
+}
