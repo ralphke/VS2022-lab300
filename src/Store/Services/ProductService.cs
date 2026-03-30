@@ -29,7 +29,7 @@ public class ProductService
     {
         return await cache.GetOrCreateAsync("products", async entry =>
         {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5); // Cache für 5 Minuten
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5.0);
             List<Product>? products = null;
             var response = await httpClient.GetAsync("/api/Product");
             if (response.IsSuccessStatusCode)
@@ -43,7 +43,7 @@ public class ProductService
             }
 
             return products ?? new List<Product>();
-        });
+        }) ?? new List<Product>();
     }
 
     /// <summary>

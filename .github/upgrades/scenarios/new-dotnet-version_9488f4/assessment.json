@@ -1,0 +1,901 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "net10.0",
+    "targetDisplayName": ".NETCoreApp,Version=v10.0"
+  },
+  "analysisStartTime": "2026-02-22T20:44:26.2635655Z",
+  "analysisEndTime": "2026-02-22T20:44:29.8868829Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 6,
+      "issues": 4,
+      "incidents": 26,
+      "effort": 26
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 5,
+        "Optional": 0,
+        "Potential": 21,
+        "Information": 0
+      },
+      "category": {
+        "Project": 5,
+        "NuGet": 10,
+        "Api": 11
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "BenchmarkSuite1\\BenchmarkSuite1.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 2,
+      "properties": {
+        "appName": "BenchmarkSuite1",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 3,
+        "numberOfCodeFiles": 3,
+        "linesTotal": 212,
+        "linesOfCode": 212,
+        "totalApiScanned": 356,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "65607b70-de02-4135-9c2b-d4d972c7bff3",
+          "ruleId": "NuGet.0002",
+          "projectPath": "BenchmarkSuite1\\BenchmarkSuite1.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.InMemory, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.InMemory, and replace with new package Microsoft.EntityFrameworkCore.InMemory 10.0.3",
+              "protected": "Microsoft.EntityFrameworkCore.InMemory, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.InMemory, and replace with new package Microsoft.EntityFrameworkCore.InMemory 10.0.3"
+            },
+            "kind": "File",
+            "path": "BenchmarkSuite1\\BenchmarkSuite1.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.InMemory, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.InMemory, and replace with new package Microsoft.EntityFrameworkCore.InMemory 10.0.3",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.InMemory, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.InMemory, and replace with new package Microsoft.EntityFrameworkCore.InMemory 10.0.3",
+            "label": "Microsoft.EntityFrameworkCore.InMemory 9.0.6",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.InMemory",
+              "PackageVersion": "9.0.6",
+              "PackageNewVersion": "10.0.3",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "1f52dda7-6c61-45a3-bad8-9e054b99fc5e",
+          "ruleId": "Project.0002",
+          "projectPath": "BenchmarkSuite1\\BenchmarkSuite1.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+              "protected": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0"
+            },
+            "kind": "File",
+            "path": "BenchmarkSuite1\\BenchmarkSuite1.csproj",
+            "snippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "protectedSnippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "DataEntities\\DataEntities.csproj",
+      "startingProject": true,
+      "issues": 1,
+      "storyPoints": 1,
+      "properties": {
+        "appName": "DataEntities",
+        "projectKind": "ClassLibrary",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 1,
+        "numberOfCodeFiles": 1,
+        "linesTotal": 47,
+        "linesOfCode": 47,
+        "totalApiScanned": 701,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "2a2a2401-353a-44ad-b041-71ea0d6c0b09",
+          "ruleId": "Project.0002",
+          "projectPath": "DataEntities\\DataEntities.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+              "protected": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0"
+            },
+            "kind": "File",
+            "path": "DataEntities\\DataEntities.csproj",
+            "snippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "protectedSnippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "Products\\Products.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 6,
+      "properties": {
+        "appName": "Products",
+        "projectKind": "AspNetCore",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 14,
+        "numberOfCodeFiles": 3,
+        "linesTotal": 14383,
+        "linesOfCode": 364,
+        "totalApiScanned": 686,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "fb4461ce-11e5-45af-a44a-4032cf668005",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Products\\Products.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Text.Json, 9.0.6\n\nEmpfehlung:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.3",
+              "protected": "System.Text.Json, 9.0.6\n\nEmpfehlung:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.3"
+            },
+            "kind": "File",
+            "path": "Products\\Products.csproj",
+            "snippet": "System.Text.Json, 9.0.6\n\nEmpfehlung:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.3",
+            "protectedSnippet": "System.Text.Json, 9.0.6\n\nEmpfehlung:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.3",
+            "label": "System.Text.Json 9.0.6",
+            "properties": {
+              "PackageId": "System.Text.Json",
+              "PackageVersion": "9.0.6",
+              "PackageNewVersion": "10.0.3",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "a49646fe-2854-4a10-8f2d-71214b878e37",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Products\\Products.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Formats.Asn1, 9.0.6\n\nEmpfehlung:\n\nRemove System.Formats.Asn1, and replace with new package System.Formats.Asn1 10.0.3",
+              "protected": "System.Formats.Asn1, 9.0.6\n\nEmpfehlung:\n\nRemove System.Formats.Asn1, and replace with new package System.Formats.Asn1 10.0.3"
+            },
+            "kind": "File",
+            "path": "Products\\Products.csproj",
+            "snippet": "System.Formats.Asn1, 9.0.6\n\nEmpfehlung:\n\nRemove System.Formats.Asn1, and replace with new package System.Formats.Asn1 10.0.3",
+            "protectedSnippet": "System.Formats.Asn1, 9.0.6\n\nEmpfehlung:\n\nRemove System.Formats.Asn1, and replace with new package System.Formats.Asn1 10.0.3",
+            "label": "System.Formats.Asn1 9.0.6",
+            "properties": {
+              "PackageId": "System.Formats.Asn1",
+              "PackageVersion": "9.0.6",
+              "PackageNewVersion": "10.0.3",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "01f04ed6-c9df-4e46-9e11-952d13676f7e",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Products\\Products.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.SqlServer, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.3",
+              "protected": "Microsoft.EntityFrameworkCore.SqlServer, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.3"
+            },
+            "kind": "File",
+            "path": "Products\\Products.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.SqlServer, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.3",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.SqlServer, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.3",
+            "label": "Microsoft.EntityFrameworkCore.SqlServer 9.0.6",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.SqlServer",
+              "PackageVersion": "9.0.6",
+              "PackageNewVersion": "10.0.3",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "107f4d9a-8db8-434e-89cc-dfbee5623dac",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Products\\Products.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.Tools, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.3",
+              "protected": "Microsoft.EntityFrameworkCore.Tools, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.3"
+            },
+            "kind": "File",
+            "path": "Products\\Products.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.Tools, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.3",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.Tools, 9.0.6\n\nEmpfehlung:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.3",
+            "label": "Microsoft.EntityFrameworkCore.Tools 9.0.6",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.Tools",
+              "PackageVersion": "9.0.6",
+              "PackageNewVersion": "10.0.3",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "a9753d80-f0db-4da8-80bf-2f526bba3892",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Products\\Products.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.VisualStudio.Web.CodeGeneration.Design, 9.0.0\n\nEmpfehlung:\n\nRemove Microsoft.VisualStudio.Web.CodeGeneration.Design, and replace with new package Microsoft.VisualStudio.Web.CodeGeneration.Design 10.0.2",
+              "protected": "Microsoft.VisualStudio.Web.CodeGeneration.Design, 9.0.0\n\nEmpfehlung:\n\nRemove Microsoft.VisualStudio.Web.CodeGeneration.Design, and replace with new package Microsoft.VisualStudio.Web.CodeGeneration.Design 10.0.2"
+            },
+            "kind": "File",
+            "path": "Products\\Products.csproj",
+            "snippet": "Microsoft.VisualStudio.Web.CodeGeneration.Design, 9.0.0\n\nEmpfehlung:\n\nRemove Microsoft.VisualStudio.Web.CodeGeneration.Design, and replace with new package Microsoft.VisualStudio.Web.CodeGeneration.Design 10.0.2",
+            "protectedSnippet": "Microsoft.VisualStudio.Web.CodeGeneration.Design, 9.0.0\n\nEmpfehlung:\n\nRemove Microsoft.VisualStudio.Web.CodeGeneration.Design, and replace with new package Microsoft.VisualStudio.Web.CodeGeneration.Design 10.0.2",
+            "label": "Microsoft.VisualStudio.Web.CodeGeneration.Design 9.0.0",
+            "properties": {
+              "PackageId": "Microsoft.VisualStudio.Web.CodeGeneration.Design",
+              "PackageVersion": "9.0.0",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "4dcf8706-43e9-4bce-bfb8-7f83cf1958e6",
+          "ruleId": "Project.0002",
+          "projectPath": "Products\\Products.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+              "protected": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0"
+            },
+            "kind": "File",
+            "path": "Products\\Products.csproj",
+            "snippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "protectedSnippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "Store\\Store.csproj",
+      "startingProject": true,
+      "issues": 3,
+      "storyPoints": 12,
+      "properties": {
+        "appName": "Store",
+        "projectKind": "AspNetCore",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 19,
+        "numberOfCodeFiles": 3,
+        "linesTotal": 922,
+        "linesOfCode": 211,
+        "totalApiScanned": 1731,
+        "minLinesOfCodeToChange": 11,
+        "maxLinesOfCodeToChange": 11
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "9e3310b7-dec1-480f-b4f7-46fe7b206eff",
+          "ruleId": "Project.0002",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+              "protected": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0"
+            },
+            "kind": "File",
+            "path": "Store\\Store.csproj",
+            "snippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "protectedSnippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        },
+        {
+          "incidentId": "c5ce1c96-4a64-4aa7-a85a-a66d282e307e",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return httpClient?.BaseAddress?.ToString() ?? \u0022Unknown\u0022;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "Store\\obj\\Release\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Components/Pages/ProductsDebug_razor.g.cs",
+            "snippet": "return httpClient?.BaseAddress?.ToString() ?? \u0022Unknown\u0022;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 631,
+            "column": 11
+          }
+        },
+        {
+          "incidentId": "6439c1c6-2ef6-4a11-9bfd-4814f901582c",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var uri = new Uri(NavigationManager.Uri);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "Store\\obj\\Release\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Components/Pages/About_razor.g.cs",
+            "snippet": "var uri = new Uri(NavigationManager.Uri);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 140,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "57ee4685-ffd9-47ef-bfb4-bb7ba13a1a23",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var uri = new Uri(NavigationManager.Uri);",
+              "protected": "M:System.Uri.#ctor(System.String)"
+            },
+            "kind": "File",
+            "path": "Store\\obj\\Release\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Components/Pages/About_razor.g.cs",
+            "snippet": "var uri = new Uri(NavigationManager.Uri);",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String)",
+            "label": "M:System.Uri.#ctor(System.String)",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 140,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "95023756-6f11-4854-ac8c-de678c8ed83f",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return await response.Content.ReadFromJsonAsync\u003CProduct\u003E();",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "Store\\Services\\ProductService.cs",
+            "snippet": "return await response.Content.ReadFromJsonAsync\u003CProduct\u003E();",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 72,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "faf84874-95c6-4d9a-9771-528800abe05d",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return await response.Content.ReadFromJsonAsync(ProductSerializerContext.Default.ListProduct) ?? new List\u003CProduct\u003E();",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "Store\\Services\\ProductService.cs",
+            "snippet": "return await response.Content.ReadFromJsonAsync(ProductSerializerContext.Default.ListProduct) ?? new List\u003CProduct\u003E();",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 58,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "0a9a2d0f-351f-4baf-92cc-3cccfa8eeffc",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "products = await response.Content.ReadFromJsonAsync(ProductSerializerContext.Default.ListProduct);",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "Store\\Services\\ProductService.cs",
+            "snippet": "products = await response.Content.ReadFromJsonAsync(ProductSerializerContext.Default.ListProduct);",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 41,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "5aaafb15-c10c-4a97-8d5b-386466ec0caf",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: New TimeSpan.From*() overloads that take integers ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);",
+              "protected": "M:System.TimeSpan.FromMinutes(System.Int64)"
+            },
+            "kind": "File",
+            "path": "Store\\Services\\ProductService.cs",
+            "snippet": "entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);",
+            "protectedSnippet": "M:System.TimeSpan.FromMinutes(System.Int64)",
+            "label": "M:System.TimeSpan.FromMinutes(System.Int64)",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/timespan-from-overloads.md",
+                "isCustom": false
+              }
+            ],
+            "line": 31,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "073d5e96-a7cc-4e12-9f8d-fb5dfb8ba68d",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: Exception diagnostics are suppressed when IExceptionHandler.TryHandleAsync returns true ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "app.UseExceptionHandler(\u0022/Error\u0022, createScopeForErrors: true);",
+              "protected": "M:Microsoft.AspNetCore.Builder.ExceptionHandlerExtensions.UseExceptionHandler(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.Boolean)"
+            },
+            "kind": "File",
+            "path": "Store\\Program.cs",
+            "snippet": "app.UseExceptionHandler(\u0022/Error\u0022, createScopeForErrors: true);",
+            "protectedSnippet": "M:Microsoft.AspNetCore.Builder.ExceptionHandlerExtensions.UseExceptionHandler(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.Boolean)",
+            "label": "M:Microsoft.AspNetCore.Builder.ExceptionHandlerExtensions.UseExceptionHandler(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.Boolean)",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/aspnet-core/10/exception-handler-diagnostics-suppressed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 29,
+            "column": 4
+          }
+        },
+        {
+          "incidentId": "8363cef5-05db-4e17-b919-d4f801e002f4",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "c.BaseAddress = new(url);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "Store\\Program.cs",
+            "snippet": "c.BaseAddress = new(url);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 12,
+            "column": 4
+          }
+        },
+        {
+          "incidentId": "0f8aa658-362f-4fd7-96c4-94fe78f32a52",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "c.BaseAddress = new(url);",
+              "protected": "M:System.Uri.#ctor(System.String)"
+            },
+            "kind": "File",
+            "path": "Store\\Program.cs",
+            "snippet": "c.BaseAddress = new(url);",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String)",
+            "label": "M:System.Uri.#ctor(System.String)",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 12,
+            "column": 4
+          }
+        },
+        {
+          "incidentId": "dc665e7a-a05b-410a-982f-252e83fc90d9",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "Store\\Store.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "c.BaseAddress = new(url);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "Store\\Program.cs",
+            "snippet": "c.BaseAddress = new(url);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API-Dokumentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 12,
+            "column": 4
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "TinyShop.AppHost\\TinyShop.AppHost.csproj",
+      "startingProject": true,
+      "issues": 0,
+      "storyPoints": 0,
+      "properties": {
+        "appName": "TinyShop.AppHost",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 1,
+        "numberOfCodeFiles": 1,
+        "linesTotal": 9,
+        "linesOfCode": 9,
+        "totalApiScanned": 0,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [],
+      "features": []
+    },
+    {
+      "path": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 5,
+      "properties": {
+        "appName": "TinyShop.ServiceDefaults",
+        "projectKind": "ClassLibrary",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 1,
+        "numberOfCodeFiles": 1,
+        "linesTotal": 126,
+        "linesOfCode": 126,
+        "totalApiScanned": 122,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "f8d3d113-0757-411c-ad63-fc7857104e88",
+          "ruleId": "NuGet.0002",
+          "projectPath": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Http.Resilience, 9.6.0\n\nEmpfehlung:\n\nRemove Microsoft.Extensions.Http.Resilience, and replace with new package Microsoft.Extensions.Http.Resilience 10.3.0",
+              "protected": "Microsoft.Extensions.Http.Resilience, 9.6.0\n\nEmpfehlung:\n\nRemove Microsoft.Extensions.Http.Resilience, and replace with new package Microsoft.Extensions.Http.Resilience 10.3.0"
+            },
+            "kind": "File",
+            "path": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+            "snippet": "Microsoft.Extensions.Http.Resilience, 9.6.0\n\nEmpfehlung:\n\nRemove Microsoft.Extensions.Http.Resilience, and replace with new package Microsoft.Extensions.Http.Resilience 10.3.0",
+            "protectedSnippet": "Microsoft.Extensions.Http.Resilience, 9.6.0\n\nEmpfehlung:\n\nRemove Microsoft.Extensions.Http.Resilience, and replace with new package Microsoft.Extensions.Http.Resilience 10.3.0",
+            "label": "Microsoft.Extensions.Http.Resilience 9.6.0",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Http.Resilience",
+              "PackageVersion": "9.6.0",
+              "PackageNewVersion": "10.3.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "4fa75ca0-a1c5-492f-85e6-c53ac4e411cc",
+          "ruleId": "NuGet.0002",
+          "projectPath": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.ServiceDiscovery, 9.3.1\n\nEmpfehlung:\n\nRemove Microsoft.Extensions.ServiceDiscovery, and replace with new package Microsoft.Extensions.ServiceDiscovery 10.3.0",
+              "protected": "Microsoft.Extensions.ServiceDiscovery, 9.3.1\n\nEmpfehlung:\n\nRemove Microsoft.Extensions.ServiceDiscovery, and replace with new package Microsoft.Extensions.ServiceDiscovery 10.3.0"
+            },
+            "kind": "File",
+            "path": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+            "snippet": "Microsoft.Extensions.ServiceDiscovery, 9.3.1\n\nEmpfehlung:\n\nRemove Microsoft.Extensions.ServiceDiscovery, and replace with new package Microsoft.Extensions.ServiceDiscovery 10.3.0",
+            "protectedSnippet": "Microsoft.Extensions.ServiceDiscovery, 9.3.1\n\nEmpfehlung:\n\nRemove Microsoft.Extensions.ServiceDiscovery, and replace with new package Microsoft.Extensions.ServiceDiscovery 10.3.0",
+            "label": "Microsoft.Extensions.ServiceDiscovery 9.3.1",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.ServiceDiscovery",
+              "PackageVersion": "9.3.1",
+              "PackageNewVersion": "10.3.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "3174809f-ecbe-450d-91e0-0cd8a91ecf99",
+          "ruleId": "NuGet.0002",
+          "projectPath": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "OpenTelemetry.Instrumentation.AspNetCore, 1.12.0\n\nEmpfehlung:\n\nRemove OpenTelemetry.Instrumentation.AspNetCore, and replace with new package OpenTelemetry.Instrumentation.AspNetCore 1.15.0",
+              "protected": "OpenTelemetry.Instrumentation.AspNetCore, 1.12.0\n\nEmpfehlung:\n\nRemove OpenTelemetry.Instrumentation.AspNetCore, and replace with new package OpenTelemetry.Instrumentation.AspNetCore 1.15.0"
+            },
+            "kind": "File",
+            "path": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+            "snippet": "OpenTelemetry.Instrumentation.AspNetCore, 1.12.0\n\nEmpfehlung:\n\nRemove OpenTelemetry.Instrumentation.AspNetCore, and replace with new package OpenTelemetry.Instrumentation.AspNetCore 1.15.0",
+            "protectedSnippet": "OpenTelemetry.Instrumentation.AspNetCore, 1.12.0\n\nEmpfehlung:\n\nRemove OpenTelemetry.Instrumentation.AspNetCore, and replace with new package OpenTelemetry.Instrumentation.AspNetCore 1.15.0",
+            "label": "OpenTelemetry.Instrumentation.AspNetCore 1.12.0",
+            "properties": {
+              "PackageId": "OpenTelemetry.Instrumentation.AspNetCore",
+              "PackageVersion": "1.12.0",
+              "PackageNewVersion": "1.15.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "3de92eaf-fb51-48ac-a05b-a0426f3c5a36",
+          "ruleId": "NuGet.0002",
+          "projectPath": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "OpenTelemetry.Instrumentation.Http, 1.12.0\n\nEmpfehlung:\n\nRemove OpenTelemetry.Instrumentation.Http, and replace with new package OpenTelemetry.Instrumentation.Http 1.15.0",
+              "protected": "OpenTelemetry.Instrumentation.Http, 1.12.0\n\nEmpfehlung:\n\nRemove OpenTelemetry.Instrumentation.Http, and replace with new package OpenTelemetry.Instrumentation.Http 1.15.0"
+            },
+            "kind": "File",
+            "path": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+            "snippet": "OpenTelemetry.Instrumentation.Http, 1.12.0\n\nEmpfehlung:\n\nRemove OpenTelemetry.Instrumentation.Http, and replace with new package OpenTelemetry.Instrumentation.Http 1.15.0",
+            "protectedSnippet": "OpenTelemetry.Instrumentation.Http, 1.12.0\n\nEmpfehlung:\n\nRemove OpenTelemetry.Instrumentation.Http, and replace with new package OpenTelemetry.Instrumentation.Http 1.15.0",
+            "label": "OpenTelemetry.Instrumentation.Http 1.12.0",
+            "properties": {
+              "PackageId": "OpenTelemetry.Instrumentation.Http",
+              "PackageVersion": "1.12.0",
+              "PackageNewVersion": "1.15.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "815b6495-86b4-44c4-b7e3-ed67e2c934a4",
+          "ruleId": "Project.0002",
+          "projectPath": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+              "protected": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0"
+            },
+            "kind": "File",
+            "path": "TinyShop.ServiceDefaults\\TinyShop.ServiceDefaults.csproj",
+            "snippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "protectedSnippet": "Aktuelles Zielframework: net9.0\nEmpfohlenes Zielframework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    }
+  ],
+  "rules": {
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "Die Zielframeworks des Projekts m\u00FCssen in das neue Zielframework ge\u00E4ndert werden, das Sie f\u00FCr dieses Upgrade ausgew\u00E4hlt haben.\n\nW\u00E4hrend des Upgrades wird das Zielframework an die entsprechende Plattform angepasst, falls zutreffend. In einigen F\u00E4llen, f\u00FChrte das Upgrade des Projekts zu mehreren Zielframeworks, wenn es Features verwendete, die jetzt \u00FCber eigene Plattformen in modernen .NET-Frameworks (Windows, iOS, Android usw.) verf\u00FCgen.",
+      "label": "Die Zielframeworks des Projekts m\u00FCssen ge\u00E4ndert werden",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "\u00DCbersicht \u00FCber das Portieren von .NET\u00A0Framework zu .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET-Projekt-SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0002": {
+      "id": "NuGet.0002",
+      "isFeature": false,
+      "description": "F\u00FCr das ausgew\u00E4hlte Zielframework wird ein NuGet-Paketupgrade empfohlen.\n\nStandardm\u00E4\u00DFige .NET-Pakete werden empfohlen, um Versionen zu verwenden, die der Version von .NET entsprechen, auf die das Projekt abzielt.\n\nAuch einige andere Pakete funktionieren f\u00FCr die ausgew\u00E4hlten Zielframeworks bekanntlich besser.",
+      "label": "Ein NuGet-Paketupgrade wird empfohlen",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262530",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0003": {
+      "id": "Api.0003",
+      "isFeature": false,
+      "description": "Die API beinhaltet eine Verhaltens\u00E4nderung in der ausgew\u00E4hlten .NET-Version: Code und Bin\u00E4rdateien verhalten sich zur Laufzeit m\u00F6glicherweise anders, ohne dass eine Neukompilierung erforderlich ist, doch das neue Verhalten ist m\u00F6glicherweise unerw\u00FCnscht und erfordert Updates.",
+      "label": "Verhaltens\u00E4nderung bei ausgew\u00E4hlter .NET-Version",
+      "severity": "Potential",
+      "effort": 1
+    },
+    "Api.0002": {
+      "id": "Api.0002",
+      "isFeature": false,
+      "description": "Die API ist mit der ausgew\u00E4hlten .NET-Version inkompatibel: erfordert Code\u00E4nderungen, um erfolgreich kompiliert zu werden, wenn eine neue Version als Zielplattform gew\u00E4hlt wird, z.\u00A0B. das Entfernen veralteter APIs oder das \u00C4ndern von Methodensignaturen.",
+      "label": "Die Quelle ist mit der ausgew\u00E4hlten .NET-Version inkompatibel.",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Breaking Changes in .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262679",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}
