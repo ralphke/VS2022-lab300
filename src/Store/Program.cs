@@ -1,5 +1,6 @@
 using Store.Components;
 using Store.Services;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,10 @@ builder.Services.AddHttpClient<ProductService>(c =>
     var url = builder.Configuration["ProductEndpoint"] ?? "https://localhost:7130";
     c.BaseAddress = new(url);
 });
+
+// Add cart service (scoped to Blazor circuit) and circuit handler
+builder.Services.AddScoped<CartService>();
+builder.Services.AddSingleton<CircuitHandler, CartCircuitHandler>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
