@@ -1,0 +1,56 @@
+{
+    "name": "TinyShop",
+    "image": "mcr.microsoft.com/devcontainers/dotnet:1-10.0",
+
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "installDockerBuildx": true
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+
+    "postCreateCommand": "bash .devcontainer/postCreate.sh",
+
+    // Aspire CLI lives in ~/.aspire/bin (installed by postCreate.sh).
+    // Disable TLS requirements so Aspire's internal OTLP/dashboard
+    // communication works over plain HTTP inside the container.
+    "remoteEnv": {
+        "PATH": "${containerEnv:PATH}:/home/vscode/.aspire/bin",
+        "ASPIRE_ALLOW_UNSECURED_TRANSPORT": "true",
+        "DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS": "true"
+    },
+
+    // HTTP ports only — avoids dev-cert trust issues inside the container.
+    // Codespaces wraps forwarded ports in HTTPS at the proxy level.
+    "forwardPorts": [15218, 5228, 5158],
+    "portsAttributes": {
+        "15218": {
+            "label": "Aspire Dashboard",
+            "onAutoForward": "openBrowserOnce"
+        },
+        "5228": {
+            "label": "Products API"
+        },
+        "5158": {
+            "label": "Store (Blazor)"
+        }
+    },
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-dotnettools.csdevkit",
+                "ms-dotnettools.csharp",
+                "ms-azuretools.vscode-dotnet-aspire"
+            ],
+            "settings": {
+                "dotnet.defaultSolution": "src/TinyShop.sln"
+            }
+        }
+    },
+
+    "remoteUser": "vscode"
+}
