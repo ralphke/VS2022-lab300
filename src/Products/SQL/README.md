@@ -14,15 +14,24 @@
    - Open the file `Products/SQL/Setup.sql`
    - Execute the script
 
-   **OR** use sqlcmd from command line:
+   **OR** use sqlcmd from command line, passing the password from `.env`:
+
+   PowerShell:
+   ```powershell
+   $pw = (Get-Content .env | Select-String 'MSSQL_SA_PASSWORD').ToString().Split('=',2)[1]
+   sqlcmd -S "(localdb)\MSSQLLocalDB" -i src\Products\SQL\Setup.sql -v MSSQL_SA_PASSWORD="$pw"
+   ```
+
+   cmd:
    ```cmd
-   sqlcmd -S (localdb)\MSSQLLocalDB -i Products\SQL\Setup.sql
+   for /f "tokens=2 delims==" %i in ('findstr MSSQL_SA_PASSWORD .env') do set _PW=%i
+   sqlcmd -S (localdb)\MSSQLLocalDB -i src\Products\SQL\Setup.sql -v MSSQL_SA_PASSWORD="%_PW%"
    ```
 
 2. **The script will:**
    - Create the `TestDB` database
    - Create the `dbo.Products` table with binary image support
-   - Create a SQL Server login `TinyShopUser` (password: `P@ssw0rd123!`)
+   - Create a SQL Server login `TinyShopUser` (password read from `MSSQL_SA_PASSWORD` in `.env`)
    - Grant necessary permissions
    - Seed initial product data
 
@@ -35,10 +44,11 @@
    }
    ```
 
-   If you want to use **SQL Server Authentication**, update `appsettings.Development.json`:
+   If you want to use **SQL Server Authentication**, update `appsettings.Development.json`,
+   replacing `<password>` with the value of `MSSQL_SA_PASSWORD` from `.env`:
    ```json
    "ConnectionStrings": {
-     "ProductsDb": "Server=(localdb)\\MSSQLLocalDB;Database=TestDB;User Id=TinyShopUser;Password=P@ssw0rd123!;TrustServerCertificate=True;"
+     "ProductsDb": "Server=(localdb)\\MSSQLLocalDB;Database=TestDB;User Id=TinyShopUser;Password=<password>;TrustServerCertificate=True;"
    }
    ```
 

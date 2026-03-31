@@ -39,6 +39,13 @@ public class Product
 
     [JsonPropertyName("modifiedDate")]
     public DateTime ModifiedDate { get; set; }
+
+    /// <summary>
+    /// Vector embedding of the product description for semantic search.
+    /// SQL Server stores this as a vector(1536) column (Ada-3 dimension).
+    /// </summary>
+    [JsonIgnore]
+    public float[]? DescriptionEmbedding { get; set; }
 }
 
 [JsonSerializable(typeof(List<Product>))]

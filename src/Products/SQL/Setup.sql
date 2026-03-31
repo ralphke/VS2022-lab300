@@ -1,5 +1,15 @@
 -- SQL Server LocalDB Setup Script for TinyShop
--- Run this script in SSMS or sqlcmd connected to (localdb)\MSSQLLocalDB
+-- Run this script via sqlcmd in SQLCMD mode, passing the password from .env:
+--
+--   PowerShell:
+--     $pw = (Get-Content .env | Select-String 'MSSQL_SA_PASSWORD').ToString().Split('=',2)[1]
+--     sqlcmd -S "(localdb)\MSSQLLocalDB" -i src\Products\SQL\Setup.sql -v MSSQL_SA_PASSWORD="$pw"
+--
+--   cmd:
+--     for /f "tokens=2 delims==" %i in ('findstr MSSQL_SA_PASSWORD .env') do set _PW=%i
+--     sqlcmd -S (localdb)\MSSQLLocalDB -i src\Products\SQL\Setup.sql -v MSSQL_SA_PASSWORD="%_PW%"
+--
+-- The MSSQL_SA_PASSWORD value is defined in the .env file at the repository root.
 
 -- 1. Create the database
 IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'TineShopDB')
@@ -19,7 +29,7 @@ GO
 -- Create a login (SQL Server Authentication)
 IF NOT EXISTS (SELECT name FROM sys.server_principals WHERE name = 'TinyShopUser')
 BEGIN
-    CREATE LOGIN TinyShopUser WITH PASSWORD = 'P@ssw0rd123!', CHECK_POLICY = OFF;
+    CREATE LOGIN TinyShopUser WITH PASSWORD = '$(MSSQL_SA_PASSWORD)', CHECK_POLICY = OFF;
 END
 GO
 
@@ -84,5 +94,5 @@ GO
 -- Alternatively, load images via application code
 
 PRINT 'Database setup completed successfully.';
-PRINT 'Connection String: Server=(localdb)\MSSQLLocalDB;Database=TineShopDB;User Id=TinyShopUser;Password=P@ssw0rd123!;TrustServerCertificate=True;';
+PRINT 'Connection String: Server=(localdb)\MSSQLLocalDB;Database=TineShopDB;User Id=TinyShopUser;Password=<MSSQL_SA_PASSWORD from .env>;TrustServerCertificate=True;';
 GO

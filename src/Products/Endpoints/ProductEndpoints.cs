@@ -1,6 +1,7 @@
 ﻿using DataEntities;
 using Microsoft.EntityFrameworkCore;
 using Products.Data;
+using Products.Services;
 
 namespace Products.Endpoints;
 /// <summary>   
@@ -87,10 +88,11 @@ p.ImageUrl,
         .Produces(StatusCodes.Status200OK);
 
  // POST to create a new product
-    group.MapPost("/", async (Product product, ProductDataContext db) =>
+    group.MapPost("/", async (Product product, ProductDataContext db, IEmbeddingService embeddingService) =>
  {
    product.CreatedDate = DateTime.UtcNow;
     product.ModifiedDate = DateTime.UtcNow;
+    product.DescriptionEmbedding = await embeddingService.EmbedTextAsync(BuildEmbeddingText(product));
   
             db.Product.Add(product);
             await db.SaveChangesAsync();
@@ -99,8 +101,8 @@ p.ImageUrl,
  .WithName("CreateProduct")
    .Produces<Product>(StatusCodes.Status201Created);
 
-    // PUT to update a product
-        group.MapPut("/{productId:int}", async (int productId, Product updatedProduct, ProductDataContext db) =>
+   // PUT to update a product
+      group.MapPut("/{productId:int}", async (int productId, Product updatedProduct, ProductDataContext db, IEmbeddingService embeddingService) =>
         {
      var product = await db.Product.FindAsync(productId);
        if (product is null) return Results.NotFound();
@@ -110,6 +112,7 @@ p.ImageUrl,
            product.Details = updatedProduct.Details;
   product.Price = updatedProduct.Price;
         product.ImageUrl = updatedProduct.ImageUrl;
+        product.DescriptionEmbedding = await embeddingService.EmbedTextAsync(BuildEmbeddingText(updatedProduct));
  
  // Update image data if provided
    if (updatedProduct.ImageData != null)
@@ -167,4 +170,9 @@ await file.CopyToAsync(memoryStream);
      .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status404NotFound);
     }
+
+   private static string BuildEmbeddingText(Product product)
+   {
+      return string.Join(' ', new[] { product.Name, product.Description, product.Details }.Where(v => !string.IsNullOrWhiteSpace(v)));
+   }
 }

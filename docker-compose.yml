@@ -4,7 +4,7 @@ services:
     container_name: tinyshop-sqlserver
     environment:
       ACCEPT_EULA: Y
-      MSSQL_SA_PASSWORD: P@ssw0rd123!
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
     ports:
       - "1433:1433"
     volumes:
@@ -21,7 +21,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: "8080"
       EnableHttpsRedirection: "false"
-      ConnectionStrings__ProductsDb: Server=sqlserver,1433;Database=TinyShop;User Id=sa;Password=P@ssw0rd123!;TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__ProductsDb: Server=sqlserver,1433;Database=TinyShop;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;Encrypt=False;
     ports:
       - "5228:8080"
     restart: on-failure
@@ -46,6 +46,17 @@ services:
       - store-dataprotection-keys:/root/.aspnet/DataProtection-Keys
     restart: on-failure
 
+  embeddings:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-latest
+    ports:
+      - "8001:80"
+    command: --model-id sentence-transformers/all-mpnet-base-v2
+    volumes:
+      - model-cache:/data
+    environment:
+      HF_HOME: /data
+
 volumes:
+  model-cache:
   sqlserver-data:
   store-dataprotection-keys:

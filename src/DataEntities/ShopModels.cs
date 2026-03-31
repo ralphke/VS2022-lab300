@@ -158,3 +158,130 @@ public class OrderItem
     [JsonIgnore]
     public Order? Order { get; set; }
 }
+
+public class AgentCapabilitiesResponse
+{
+    public string Name { get; set; } = "TinyShop Agent Commerce";
+
+    public string Version { get; set; } = "1.0.0-alpha";
+
+    public string Protocol { get; set; } = "mcp-capability-descriptor-over-rest";
+
+    public List<AgentCapabilityDescriptor> Tools { get; set; } = [];
+}
+
+public class AgentCapabilityDescriptor
+{
+    public string Name { get; set; } = string.Empty;
+
+    public string Description { get; set; } = string.Empty;
+
+    public string Method { get; set; } = string.Empty;
+
+    public string Path { get; set; } = string.Empty;
+}
+
+public class AgentCreateCartRequest
+{
+    [Range(1, int.MaxValue)]
+    public int CustomerId { get; set; }
+
+    [Range(5, 1440)]
+    public int TtlMinutes { get; set; } = 30;
+}
+
+public class AgentUpsertCartItemRequest
+{
+    [Range(1, int.MaxValue)]
+    public int ProductId { get; set; }
+
+    [Range(1, int.MaxValue)]
+    public int Quantity { get; set; }
+}
+
+public class AgentCartSnapshot
+{
+    public Guid CartId { get; set; }
+
+    public int CustomerId { get; set; }
+
+    public string AgentId { get; set; } = string.Empty;
+
+    public DateTime CreatedDate { get; set; }
+
+    public DateTime ExpiresAt { get; set; }
+
+    public decimal Total { get; set; }
+
+    public List<AgentCartSnapshotItem> Items { get; set; } = [];
+}
+
+public class AgentCartSnapshotItem
+{
+    public int ProductId { get; set; }
+
+    public string ProductName { get; set; } = string.Empty;
+
+    public decimal UnitPrice { get; set; }
+
+    public int Quantity { get; set; }
+}
+
+public class AgentCartSession
+{
+    public Guid Id { get; set; }
+
+    [StringLength(128)]
+    public string AgentId { get; set; } = string.Empty;
+
+    public int CustomerId { get; set; }
+
+    public DateTime CreatedDate { get; set; }
+
+    public DateTime LastActivityDate { get; set; }
+
+    public DateTime ExpiresAt { get; set; }
+
+    [JsonIgnore]
+    public List<AgentCartItem> Items { get; set; } = [];
+}
+
+public class AgentCartItem
+{
+    public int Id { get; set; }
+
+    public Guid CartSessionId { get; set; }
+
+    public int ProductId { get; set; }
+
+    [StringLength(200)]
+    public string ProductName { get; set; } = string.Empty;
+
+    public decimal UnitPrice { get; set; }
+
+    [Range(1, int.MaxValue)]
+    public int Quantity { get; set; }
+
+    [JsonIgnore]
+    public AgentCartSession? CartSession { get; set; }
+}
+
+public class AgentRequestAudit
+{
+    public long Id { get; set; }
+
+    [StringLength(128)]
+    public string AgentId { get; set; } = string.Empty;
+
+    public int CustomerId { get; set; }
+
+    [StringLength(80)]
+    public string Operation { get; set; } = string.Empty;
+
+    [StringLength(64)]
+    public string RequestId { get; set; } = string.Empty;
+
+    public int StatusCode { get; set; }
+
+    public DateTime CreatedDate { get; set; }
+}

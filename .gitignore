@@ -398,3 +398,11 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Environment Configuration Files
+# .env files contain sensitive information like API keys and connection strings
+# Commit .env.example instead to share configuration template
+.env
+.env.local
+.env.*.local
+!.env.example
