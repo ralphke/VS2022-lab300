@@ -429,6 +429,8 @@ public static class Extensions
 
         try
         {
+            // The product catalog is small (single-digit count), so loading all into memory
+            // at startup and issuing one UPDATE per product is acceptable here.
             var productsWithEmbeddings = await context.Product
                 .Where(p => p.DescriptionEmbedding != null)
                 .ToListAsync();
@@ -437,6 +439,11 @@ public static class Extensions
             {
                 return;
             }
+
+            // System.Text.Json always serialises floating-point numbers using the invariant culture
+            // (period as decimal separator), matching the JSON spec. No additional options are needed,
+            // but we use explicit options for clarity.
+            var jsonOptions = new JsonSerializerOptions { WriteIndented = false };
 
             foreach (var product in productsWithEmbeddings)
             {
@@ -447,7 +454,7 @@ public static class Extensions
 
                 // Serialise the float[] (Embeddings Array) to a JSON array string — this is the
                 // transitive source used to cast into the native SQL Server VECTOR type.
-                var embeddingJson = JsonSerializer.Serialize(embedding);
+                var embeddingJson = JsonSerializer.Serialize(embedding, jsonOptions);
                 var dimension = embedding.Length;
 
                 // EF1002: The interpolated value is `dimension` (an integer from code, not from user input).
