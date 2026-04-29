@@ -68,7 +68,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: "8080"
       EnableHttpsRedirection: "false"
-      ConnectionStrings__TinyShopDB: "Server=sqlserver,1433;Database=TinyShopDB;User Id=TinyShopUser;Password=P@ssw0rd123!;TrustServerCertificate=True;Encrypt=False;"
+      ConnectionStrings__TinyShopDB: "Server=sqlserver,1433;Database=TinyShopDB;User Id=TinyShopUser;Password=${TinyShopUser_PASSWORD};TrustServerCertificate=True;Encrypt=False;"
       EMBEDDING_SERVICE__ENDPOINT: http://embeddings/embed
     ports:
       - "5228:8080"

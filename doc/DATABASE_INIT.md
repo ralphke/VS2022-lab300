@@ -1,65 +1,88 @@
 # TinyShop Database Initialization
 
 ## Overview
-The SQL Server database is auto-initialized on container startup using the `init-database.ps1` script and `Setup.sql`.
 
-## Setup Instructions
+This repository uses a containerized SQL Server workflow with a dedicated `init-db` service for database provisioning.
 
-### 1. Start Services
+The database initialization process is split into two phases:
+
+1. `src/Products/SQL/Setup.sql` provisions the database and SQL login/user
+2. `src/Products/SQL/init-db.sh` runs inside the init container to apply setup and optionally import the shipped bacpac
+
+The Products API also performs runtime maintenance on startup to ensure schema, seed initial products, load images, and build embeddings.
+
+## Start the stack
+
+From the repository root:
+
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
-### 2. Initialize Database
-After all services are running and SQL Server is healthy, run:
+The compose stack includes:
+
+- `sqlserver` — SQL Server container
+- `init-db` — database provisioning container
+- `embeddings` — local Hugging Face embeddings service
+- `products` — Products API
+- `store` — Blazor Store UI
+
+## How initialization works
+
+- `sqlserver` starts first and exposes port `1433`
+- `init-db` waits for the SQL Server container to become healthy
+- `init-db` runs `src/Products/SQL/init-db.sh`
+- `init-db.sh` executes `Setup.sql` and then may import the shipped bacpac if the database is absent or the `Products` table is empty
+- `products` starts after `init-db` completes successfully
+- `Products/Program.cs` then performs application-level database maintenance on startup
+
+## Bacpac behavior
+
+The file `src/Products/SQL/TinyShopDB-2026-Initialized.bacpac` is available if the database needs a fast restore.
+
+`init-db.sh` uses the bacpac to:
+
+- import the database when `TinyShopDB` does not exist
+- overwrite the database when `TinyShopDB` exists but `dbo.Products` is empty
+- skip import when `TinyShopDB` already exists and contains products
+
+## Manual reset
+
+To reset the database, stop the stack and remove the SQL data volume:
+
 ```bash
-pwsh init-database.ps1
+docker compose down -v
 ```
 
-This script will:
-- Wait for SQL Server to be ready
-- Connect using credentials from `.env`
-- Execute `Setup.sql` to create the TinyShopDB database
-- Create all schema, tables, indexes, and initial product data
+Then start again:
 
-## What's Created
-- **Database**: TinyShopDB
-- **Tables**: Products, Customers, Orders, OrderItems, AgentCartSessions, AgentCartItems, AgentRequestAudits
-- **Indexes**: Performance indexes on frequently queried columns
-- **User**: TinyShopUser with db_datareader and db_datawriter roles
-- **Initial Data**: Sample products and stored procedures for vector search
-
-## Troubleshooting
-
-### Script hangs on "Waiting for SQL Server to be ready..."
-- Check that SQL Server container is running: `docker ps | grep sqlserver`
-- Verify healthcheck: `docker inspect tinyshop-sqlserver | grep -A 5 Health`
-
-### SSL Certificate Errors
-The script uses the `-C` flag in sqlcmd to skip certificate verification for local development. This is safe in containerized environments.
-
-### Database Already Exists
-If TinyShopDB already exists and you want to reinitialize:
 ```bash
-# Drop the database (caution: deletes all data)
-docker exec tinyshop-sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "${MSSQL_SA_PASSWORD}" -C -Q "DROP DATABASE TinyShopDB;"
-
-# Re-run the init script
-pwsh init-database.ps1
+docker compose up -d --build
 ```
 
 ## Files
-- `init-database.ps1` — PowerShell initialization script
-- `docker-compose.yml` — Service definitions with volume mounts
-- `src/Products/SQL/Setup.sql` — Main database initialization script
-- `src/Products/SQL/*.sql` — Supporting scripts for tables, procedures, data
 
-## SQL Server Tools Available in Container
-- sqlcmd at `/opt/mssql-tools18/bin/sqlcmd`
-- Direct queries: `docker exec tinyshop-sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${MSSQL_SA_PASSWORD}' -C -Q "your query"`
+- `src/Products/SQL/Setup.sql` — SQL provisioning for `TinyShopDB` and `TinyShopUser`
+- `src/Products/SQL/init-db.sh` — init container startup script
+- `src/Products/SQL/TinyShopDB-2026-Initialized.bacpac` — optional prebuilt database archive
+- `src/Products/SQL/LoadImages.sql` — helper script for loading product image bytes from disk
 
-## Environment Variables
-The script reads credentials from `.env`:
+## Environment variables
+
+The SQL Compose stack reads `MSSQL_SA_PASSWORD` from the repository root `.env` file.
+
+Example:
+
+```env
+MSSQL_SA_PASSWORD=your-sa-password-here
 ```
-PRODUCTS_DB_CONNECTION_STRING=Server=sqlserver,1433;Database=TinyShopDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;Encrypt=False;
+
+## Troubleshooting
+
+- If `init-db` fails, inspect logs:
+
+```bash
+docker compose logs init-db
 ```
+
+- If Docker access fails inside the devcontainer, rebuild/reopen the container after the post-create setup runs.

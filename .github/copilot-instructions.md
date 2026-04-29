@@ -12,6 +12,8 @@ Open in GitHub Codespaces or VS Code with the Dev Containers extension, then:
 aspire run          # starts sqlserver → products → store
 ```
 
+In the Docker Compose workflow, the repo also includes an `init-db` service that provisions `TinyShopDB` before `products` starts.
+
 Forwarded ports (HTTP):
 - `15218` — Aspire Dashboard (opens automatically)
 - `5228`  — Products API
@@ -72,6 +74,8 @@ The database is SQL Server (not in-memory). `InitializeDatabaseAsync()` runs at 
 ## Database Seeding and Image Loading
 
 **Automatic (via Aspire — preferred)**: On first `aspire run`, `DbInitializer.InitializeAsync()` seeds the 9 products then immediately calls `LoadImagesAsync()`, which reads `Products/wwwroot/images/product1.png` … `product9.png` and writes the bytes into the `ImageData` column. This is idempotent — it only runs when the `Products` table is empty.
+
+In Docker Compose mode, `src/Products/SQL/init-db.sh` also provisions the database and can import the shipped bacpac before `products` starts.
 
 **If the DB already exists but images are missing** (e.g., after a partial setup or schema reset), use the API upload endpoint:
 

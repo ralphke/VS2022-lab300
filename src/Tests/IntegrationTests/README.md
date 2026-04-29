@@ -1,12 +1,19 @@
-Integration tests for TinyShop (Products API and Store UI)
+# Integration Tests
 
-Run tests:
+Run the TinyShop integration tests with:
 
+```bash
 dotnet test src/Tests/IntegrationTests/IntegrationTests.csproj
+```
 
-If SQL Server is running outside the test host process (for example via Aspire or docker compose), set the connection string explicitly before running tests:
+If SQL Server is provided externally (for example via the Docker Compose stack or a local SQL Server instance), set the database connection string by substituting the password from the current environment.
 
-PowerShell:
+```bash
+export ConnectionStrings__TinyShopDB="Server=localhost,1433;Database=TinyShopDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;Encrypt=False;"
+```
 
-$env:ConnectionStrings__TinyShopDB = "Server=localhost,1433;Database=TinyShopDB;User Id=sa;Password=P@ssw0rd123!;TrustServerCertificate=True;Encrypt=False;"
+Then run:
+
+```bash
 dotnet test src/Tests/IntegrationTests/IntegrationTests.csproj
+```

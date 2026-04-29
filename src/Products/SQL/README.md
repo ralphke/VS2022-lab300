@@ -1,141 +1,54 @@
-# SQL Server Setup Instructions
+# Products SQL Provisioning
 
-## Prerequisites
+## Overview
 
-- SQL Server 2025:latest Docker image installed (included with Visual Studio or SQL Server Express)
-- SQL Server Management Studio (SSMS) or Visual Studio Code mssql extension (optional, for running SQL scripts)
+This folder contains the SQL provisioning scripts and database init container for TinyShop.
 
-## Setup Steps
+The Docker Compose stack uses `src/Products/SQL/init-db.sh` to configure the SQL Server instance and create `TinyShopDB` before the Products API starts.
 
-### Option 1: Using SQL Authentication (Recommended for sql in Docker container)
+## How it works
 
-1. **Run the SQL Setup Script**
-   - Open SQL Server Management Studio (SSMS) or Azure Data Studio
-   - Connect to `sqlserver:1433`
-   - Open the file `Products/SQL/Setup.sql`
-   - Execute the script
+- `src/Products/SQL/Setup.sql` creates `TinyShopDB`, enables preview features, and provisions the `TinyShopUser` login
+- `src/Products/SQL/init-db.sh` runs in the `init-db` container and applies setup logic
+- If `TinyShopDB` does not exist, `init-db.sh` imports `TinyShopDB-2026-Initialized.bacpac` for faster startup
+- If `TinyShopDB` exists and the `Products` table is empty, `init-db.sh` drops and re-imports the database from the bacpac
+- If the database exists with products, the bacpac import is skipped to preserve data
 
-   **OR** use sqlcmd from command line, passing the password from `.env`:
+## Startup
 
-   PowerShell:
-
-   ```powershell
-   $pw = (Get-Content .env | Select-String 'MSSQL_SA_PASSWORD').ToString().Split('=',2)[1]
-   sqlcmd -S "sqlserver:1433" -i src\Products\SQL\Setup.sql -v MSSQL_SA_PASSWORD="$pw"
-   ```
-
-   cmd:
-
-   ```cmd
-   for /f "tokens=2 delims==" %i in ('findstr MSSQL_SA_PASSWORD .env') do set _PW=%i
-   sqlcmd -S sqlserver -i src\Products\SQL\Setup.sql -v MSSQL_SA_PASSWORD="%_PW%"
-   ```
-
-2. **The script will:**
-   - Create the `TestDB` database
-   - Create the `dbo.Products` table with binary image support
-   - Create a SQL Server login `TinyShopUser` (password read from `MSSQL_SA_PASSWORD` in `.env`)
-   - Grant necessary permissions
-   - Seed initial product data
-
-3. **Configure Connection String**
-   The application is configured to use **SQL Server Security** by default:
-
-   ```json
-   "ConnectionStrings": {
-  "TinyShopDB": "Server=sqlserver;Database=TinyShopDB;Integrated Security=false;TrustServerCertificate=True;"
-   }
-   ```
-
-   If you want to use **SQL Server Authentication**, update `appsettings.Development.json`,
-   replacing `<password>` with the value of `MSSQL_SA_PASSWORD` from `.env`:
-   ```json
-   "ConnectionStrings": {
-     "TinyShopDB": "Server=sqlserver;Database=TinyShopDB;User Id=TinyShopUser;Password=<password>;TrustServerCertificate=True;"
-   }
-   ```
-
-### Option 2: Automatic Database Creation
-
-The application will automatically create the database and seed data on first run if using Integrated Security:
-
-1. Ensure sqlserver is running
-2. Run the application
-3. EF Core will call `EnsureCreatedAsync()` to create the database
-
-## Working with Binary Images
-
-### Loading Images into the Database
-
-You can load images using the API endpoint:
+Run the Compose stack from the repository root:
 
 ```bash
-# Upload an image for product ID 1
-curl -X PUT "https://localhost:PORT/api/Product/1/image" \
-  -H "Content-Type: multipart/form-data" \
-  -F "file=@path/to/image.png"
+docker compose up -d --build
 ```
 
-### Retrieving Images
+The `init-db` service waits for SQL Server to become healthy and then runs `/usr/src/sql/init/init-db.sh`.
 
-Images are returned as base64-encoded data in the JSON response:
+## Manual SQL provisioning
 
-```json
-{
-  "id": 1,
-  "name": "Solar Powered Flashlight",
-  "imageDataBase64": "iVBORw0KGgoAAAANSUhEUgAA..."
-}
-```
-
-Or retrieve the image directly:
-```
-GET /api/Product/1/image
-```
-
-## Troubleshooting
-
-### sqlserver Not Found
-If you get "Cannot connect to sqlserver":
-- Verify SQLServer is installed: `sqllocaldb info`
-- Start sqlserver: `sqllocaldb start MSSQLLocalDB`
-- Check version: `sqllocaldb versions`
-
-### Login Failed
-If using SQL Authentication and login fails:
-- Ensure SQL Server Authentication is enabled
-
-### Connection String Issues
-- Always escape backslashes in JSON: `sqlserver:1433`
-- Use `TrustServerCertificate=True` for SQlserver
-
-## Database Schema
-
-```sql
-CREATE TABLE dbo.Products (
-    Id INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(200) NOT NULL,
-    Description NVARCHAR(1000) NULL,
-    Price DECIMAL(18,2) NOT NULL,
-    ImageUrl NVARCHAR(500) NULL,
-    ImageData VARBINARY(MAX) NULL,
-    DescriptionVector vector(768) NULL,
-    CreatedDate DATETIME2 DEFAULT GETUTCDATE(),
-    ModifiedDate DATETIME2 DEFAULT GETUTCDATE()
-);
-```
-
-## Testing the Setup
-
-Run the Products API and test the endpoints:
+If you need to provision the database manually, use `sqlcmd` against the SQL Server container and rely on the `MSSQL_SA_PASSWORD` environment variable:
 
 ```bash
-# Get all products
-curl https://localhost:PORT/api/Product
-
-# Get a specific product with image data
-curl https://localhost:PORT/api/Product/1
-
-# Get product image as PNG
-curl https://localhost:PORT/api/Product/1/image --output product1.png
+pwsh -NoProfile -Command "sqlcmd -S localhost,1433 -U sa -P $env:MSSQL_SA_PASSWORD -i src/Products/SQL/Setup.sql"
 ```
+
+Or with a bash shell:
+
+```bash
+sqlcmd -S localhost,1433 -U sa -P "$MSSQL_SA_PASSWORD" -i src/Products/SQL/Setup.sql
+```
+
+## Load image data
+
+The helper script `LoadImages.sql` can load PNG images from the mounted `/usr/src/sql/images` folder into `dbo.Products.ImageData`.
+This script requires `OPENROWSET` and elevated permissions and is not the recommended production path.
+
+Preferred option:
+- use the API endpoint `PUT /api/Product/{id}/image`
+
+## Files
+
+- `Setup.sql` — provisions `TinyShopDB` and `TinyShopUser`
+- `init-db.sh` — init container startup script
+- `TinyShopDB-2026-Initialized.bacpac` — optional prebuilt database archive
+- `LoadImages.sql` — helper script for loading image binaries into the database

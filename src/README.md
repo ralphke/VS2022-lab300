@@ -1,90 +1,64 @@
-# TinyShop - Setup Guide
+# TinyShop Sample Workspace
 
 ## Overview
 
-TinyShop is a .NET 10 e-commerce sample with:
+This repository contains a .NET 10 Products API and Blazor Store frontend for a sample e-commerce app.
 
-- Products API (Minimal API + EF Core + SQL Server)
-- Store (Blazor Server frontend)
-- Aspire AppHost orchestration
-- Docker Compose workflow for local containerized runs
+### Key runtime components
 
-## Current Features
-
-- Product catalog with database-backed images
-- Shopping cart flow (add items, cart badge, clear cart)
-- Checkout flow and order confirmation page
-- Impressum page for RaKeTe-Technology in navigation
+- `Products` — ASP.NET Core Minimal API with SQL Server and semantic search
+- `Store` — Blazor Server frontend
+- `TinyShop.AppHost` — Aspire orchestrator for local workflows
+- `src/Products/SQL` — database provisioning scripts and init container logic
 
 ## Run Options
 
-### Option A: Aspire (recommended for solution development)
+### Option A: Aspire (recommended)
 
 ```bash
-dotnet run --project TinyShop.AppHost
+aspire run
 ```
+
+Aspire starts the local development services, including SQL Server, Products, and Store.
 
 ### Option B: Docker Compose
 
-From repository root:
+From the repository root:
 
 ```bash
 docker compose up -d --build
 ```
 
-Endpoints in compose mode:
-
-- Store: http://localhost:5158
-- Products API: http://localhost:5228/api/Product
-- Checkout: http://localhost:5158/checkout
-- Impressum: http://localhost:5158/impressum
-
-Stop compose:
+Stop the stack:
 
 ```bash
 docker compose down
 ```
 
-## Image Loading and Seeding
+## Database Initialization
 
-On first startup, Products initializes the database and seeds product data.
-The initializaion process uses also the huggingface/textembedings LLM to create the embeddings for Product name and description
-If image bytes are missing in an existing DB, use:
+The Docker Compose workflow uses the `init-db` service to provision the database via `src/Products/SQL/init-db.sh` and `src/Products/SQL/Setup.sql`.
 
-```powershell
-cd D:\repros\VS2022-lab300\src\Products\SQL
-.\LoadImages.ps1
+The Products app also checks the database on startup and will seed initial products, load images, and create embeddings when needed.
+
+## Image Loading
+
+If image bytes are missing for existing products, use the API endpoint:
+
+```bash
+curl -X PUT "http://localhost:5228/api/Product/1/image"   -F "file=@src/Products/wwwroot/images/product1.png"
 ```
 
-## Configuration Notes
+You can also inspect image state with:
 
-- Store uses ProductService as typed HttpClient and reads ProductEndpoint from config.
-- Products uses SQL Server by default.
-- Products uses EF Core InMemory only when environment is Testing (for integration tests).
-- HTTPS redirection is configurable through EnableHttpsRedirection (used as false in compose).
+```bash
+curl http://localhost:5228/api/Product/debug/images
+```
 
 ## Tests
 
-Run all test projects:
+Run all tests with:
 
 ```bash
-dotnet test src/Store.Tests/Store.Tests.csproj
-dotnet test tests/Store.UnitTests/Store.UnitTests.csproj
-dotnet test tests/Store.IntegrationTests/Store.IntegrationTests.csproj
-dotnet test src/Tests/IntegrationTests/IntegrationTests.csproj
-dotnet test src/Tests/TinyShopTest/TinyShopTest.csproj
+dotnet test src/TinyShop.sln
 ```
-
-## Troubleshooting
-
-### Products assembly blocked by local Windows Application Control
-
-If you see a FileLoadException mentioning policy block on Products.dll, run via Docker Compose or dev container instead of direct host execution.
-
-### Images not displaying
-
-Use the debug endpoint:
-
-- /api/Product/debug/images
-
-Then reload images with LoadImages.ps1 if needed.

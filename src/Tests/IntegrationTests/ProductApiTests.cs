@@ -122,9 +122,21 @@ public class ProductApiTests : IClassFixture<ProductApiTests.ProductsApiFactory>
 
         private static string ResolveTinyShopDbConnectionString()
         {
-            return Environment.GetEnvironmentVariable("ConnectionStrings__TinyShopDB")
-                ?? Environment.GetEnvironmentVariable("PRODUCTS_DB_CONNECTION_STRING")
-                ?? "Server=localhost,1433;Database=TinyShopDB;User Id=sa;Password=P@ssw0rd123!;TrustServerCertificate=True;Encrypt=False;";
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__TinyShopDB")
+                ?? Environment.GetEnvironmentVariable("PRODUCTS_DB_CONNECTION_STRING");
+
+            if (!string.IsNullOrWhiteSpace(connectionString))
+            {
+                return connectionString;
+            }
+
+            var saPassword = Environment.GetEnvironmentVariable("MSSQL_SA_PASSWORD");
+            if (string.IsNullOrWhiteSpace(saPassword))
+            {
+                throw new InvalidOperationException("Set ConnectionStrings__TinyShopDB, PRODUCTS_DB_CONNECTION_STRING, or MSSQL_SA_PASSWORD.");
+            }
+
+            return $"Server=localhost,1433;Database=TinyShopDB;User Id=sa;Password={saPassword};TrustServerCertificate=True;Encrypt=False;";
         }
     }
 

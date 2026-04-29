@@ -50,7 +50,7 @@ IF NOT EXISTS (SELECT name
 FROM sys.server_principals
 WHERE name = 'TinyShopUser')
 BEGIN
-    CREATE LOGIN TinyShopUser WITH PASSWORD = 'P@ssw0rd123!', CHECK_POLICY = OFF;
+    CREATE LOGIN TinyShopUser WITH PASSWORD = '$(TinyShopUserPassword)', CHECK_POLICY = OFF;
 END
 GO
 

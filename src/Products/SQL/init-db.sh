@@ -86,9 +86,11 @@ rm -f "$LOG_FILE"
 echo "Running database setup scripts..."
 
 # Always run Setup.sql first because it configures the SQL Server environment even when a bacpac is available.
+TINYSHOP_USER_PASSWORD="${TinyShopUser_PASSWORD:-$PASSWORD}"
+
 if [ -f "$SCRIPT_DIR/Setup.sql" ]; then
   echo "Running Setup.sql..."
-  if ! $SQLCMD -S "$SERVER" -U sa -P "$PASSWORD" -C -i "$SCRIPT_DIR/Setup.sql" 2>&1 | tee -a "$LOG_FILE"; then
+  if ! $SQLCMD -S "$SERVER" -U sa -P "$PASSWORD" -C -v "TinyShopUserPassword=$TINYSHOP_USER_PASSWORD" -i "$SCRIPT_DIR/Setup.sql" 2>&1 | tee -a "$LOG_FILE"; then
     echo "Warning: Setup.sql had errors (may be non-critical)"
   fi
 else

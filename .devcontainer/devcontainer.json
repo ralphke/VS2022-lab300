@@ -48,7 +48,8 @@
                 "ms-dotnettools.csdevkit",
                 "ms-dotnettools.csharp",
                 "ms-azuretools.vscode-dotnet-aspire",
-                "ms-mssql.mssql"
+                "ms-mssql.mssql",
+                "docker.docker"
             ],
             "settings": {
                 "dotnet.defaultSolution": "src/TinyShop.sln"

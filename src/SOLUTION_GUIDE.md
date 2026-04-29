@@ -2,7 +2,7 @@
 
 **Version:** 1.0  
 **Target Framework:** .NET 10 
-**Last Updated:** 2026
+**Last Updated:** April 2026
 
 ---
 
@@ -92,7 +92,7 @@ TinyShop is a modern e-commerce demonstration application built with .NET 10, sh
 |-------|-----------|
 | **Backend Framework** | ASP.NET Core 9.0 Minimal APIs |
 | **Frontend Framework** | Blazor Server (Interactive Server Components) |
-| **Database** | SQL Server LocalDB / Entity Framework Core 9.0 |
+| **Database** | SQL Server (containerized or hosted) / Entity Framework Core 9.0 |
 | **Orchestration** | .NET Aspire |
 | **Observability** | OpenTelemetry (Metrics, Traces, Logs) |
 | **Testing** | xUnit, WebApplicationFactory, Coverlet |
@@ -537,9 +537,9 @@ dotnet tool run reportgenerator
 
 ### Prerequisites
 
-- **.NET 9 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/9.0)
+- **.NET 10 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/10.0)
 - **Visual Studio 2022** (17.12+) or **VS Code** with C# Dev Kit
-- **SQL Server LocalDB** (included with Visual Studio)
+- **Docker Desktop** or another Docker engine for the Compose/devcontainer workflow
 - **Git** - For cloning the repository
 
 ### Installation
@@ -590,16 +590,19 @@ dotnet run
 
 ### First-Time Setup
 
-On first run, the application will:
-1. Create the `TinyShopDB` database in sqlserver:1433
-2. Apply database schema
-3. Seed 9 sample products
-4. Products will have no images initially
+The Docker Compose workflow provisions SQL Server and the database before the Products app starts.
 
-**To add product images:**
-```powershell
-# From Products/SQL directory
-.\LoadImages.ps1
+1. `sqlserver` starts and becomes healthy
+2. `init-db` runs `src/Products/SQL/init-db.sh`
+3. `Setup.sql` creates `TinyShopDB`, enables preview features, and provisions `TinyShopUser`
+4. If available, the shipped bacpac can be imported when the database is missing or when `dbo.Products` is empty
+5. The Products app then ensures schema, seeds products if needed, loads image binaries, and builds embeddings
+
+If image data is missing, use the API endpoint instead of the obsolete PowerShell script:
+
+```bash
+curl -X PUT "http://localhost:5228/api/Product/1/image" \
+  -F "file=@src/Products/wwwroot/images/product1.png"
 ```
 
 ---
@@ -705,9 +708,10 @@ When changing the `Product` model:
    }
    ```
 
-3. **For LocalDB, drop and recreate**:
-   - Delete database in SQL Server Object Explorer
-   - Restart application (auto-creates with new schema)
+3. **For Docker Compose, reset the SQL data volume**:
+   - Stop the stack
+   - Run `docker compose down -v`
+   - Start again with `docker compose up -d --build`
 
 4. **For production, use migrations**:
    ```bash
@@ -726,8 +730,7 @@ When changing the `Product` model:
 ```json
 {
   "ConnectionStrings": {
-    "TinyShopDB": "Server=sqlserver:1433;Database=TinyShopDB;
-                   Integrated Security=false;TrustServerCertificate=True;"
+    "TinyShopDB": "Server=sqlserver,1433;Database=TinyShopDB;User Id=TinyShopUser;Password=<YOUR_PASSWORD>;TrustServerCertificate=True;Encrypt=False;"
   },
   "Logging": {
     "LogLevel": {
@@ -946,13 +949,9 @@ SqlException: A network-related or instance-specific error occurred
 ```
 
 **Solutions:**
-- Verify SQL Server LocalDB is installed
-- Check connection string in `appsettings.json`
-- Restart SQL Server LocalDB:
-  ```bash
-  sqllocaldb stop MSSQLLocalDB
-  sqllocaldb start MSSQLLocalDB
-  ```
+- Verify SQL Server is running and reachable from the configured host
+- Check the connection string in `appsettings.json` or environment variables
+- If using Docker Compose, make sure the `sqlserver` service is healthy and the `init-db` service completed successfully
 
 #### 2. CORS Errors in Browser
 
@@ -986,8 +985,8 @@ Port 7130 is already in use
 - Network tab shows 404 for image requests
 
 **Solutions:**
-- Run `LoadImages.ps1` script from `Products/SQL/` directory
-- Verify `ImageData` is populated in database
+- Use the API endpoint `PUT /api/Product/{id}/image` to upload missing image bytes
+- Verify `ImageData` is populated in the database
 - Check `ProductService.GetImageUrl()` logic
 - Inspect `/api/Product/debug/images` endpoint
 
@@ -1086,7 +1085,7 @@ File '...ProductSerializerContext.g.cs' does not exist (any more)
 ## Additional Resources
 
 ### Documentation
-- [.NET 9 Documentation](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-9)
+- [.NET 10 Documentation](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-10)
 - [Blazor Documentation](https://learn.microsoft.com/aspnet/core/blazor/)
 - [EF Core Documentation](https://learn.microsoft.com/ef/core/)
 - [.NET Aspire Documentation](https://learn.microsoft.com/dotnet/aspire/)
@@ -1125,6 +1124,6 @@ When contributing to this solution:
 
 ---
 
-**Last Updated:** January 2025  
-**Version:** 1.0  
-**Maintainer:** TinyShop Team
+**Last Updated:** April 2026  
+**Version:** 2.0  
+**Maintainer:** RaKeTeTechnology.com Team
