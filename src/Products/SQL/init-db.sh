@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # init-db startup script
-set -eu
+set -euo pipefail
 
 SQLCMD="sqlcmd"
 PASSWORD="${MSSQL_SA_PASSWORD:-}"
@@ -118,7 +118,7 @@ if [ "$DB_CHECK" -eq 0 ]; then
       exit 1
     fi
 
-    if ! "$SQLPACKAGE" /Action:Import /SourceFile:"$BACPAC_FILE" /TargetServerName:"$SERVER" /TargetDatabaseName:"$DATABASE" /TargetUser:"sa" /TargetPassword:"$PASSWORD" /Quiet 2>&1 | tee /tmp/init-db-import.log; then
+    if ! "$SQLPACKAGE" /Action:Import /SourceFile:"$BACPAC_FILE" /TargetServerName:"$SERVER" /TargetDatabaseName:"$DATABASE" /TargetUser:"sa" /TargetPassword:"$PASSWORD" /TargetEncryptConnection:Optional /TargetTrustServerCertificate:True /Quiet 2>&1 | tee /tmp/init-db-import.log; then
       echo "ERROR: Failed to import database from bacpac. See /tmp/init-db-import.log for details."
       exit 1
     fi
@@ -149,7 +149,7 @@ if [ -f "$BACPAC_FILE" ]; then
       exit 1
     fi
 
-    if ! "$SQLPACKAGE" /Action:Import /SourceFile:"$BACPAC_FILE" /TargetServerName:"$SERVER" /TargetDatabaseName:"$DATABASE" /TargetUser:"sa" /TargetPassword:"$PASSWORD" /Quiet 2>&1 | tee /tmp/init-db-import.log; then
+    if ! "$SQLPACKAGE" /Action:Import /SourceFile:"$BACPAC_FILE" /TargetServerName:"$SERVER" /TargetDatabaseName:"$DATABASE" /TargetUser:"sa" /TargetPassword:"$PASSWORD" /TargetEncryptConnection:Optional /TargetTrustServerCertificate:True /Quiet 2>&1 | tee /tmp/init-db-import.log; then
       echo "ERROR: Failed to import database from bacpac. See /tmp/init-db-import.log for details."
       exit 1
     fi

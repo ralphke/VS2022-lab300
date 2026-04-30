@@ -58,12 +58,12 @@ RUN set -eux; \
 #    ACCEPT_EULA=${ACCEPT_EULA} apt-get install -y --no-install-recommends \
 #        msodbcsql18 \
 #        mssql-tools18
-# Install the SQLPackage tool using the .NET CLI
+# Install the SQLPackage tool using the .NET CLI into a tool path that is present in PATH
 RUN set -eux; \
-    dotnet tool install microsoft.sqlpackage --create-manifest-if-needed
+    dotnet tool install --tool-path /root/.dotnet/tools microsoft.sqlpackage
 # Verify the installation of SQLPackage
 RUN set -eux; \
-    dotnet sqlpackage /version:true
+    /root/.dotnet/tools/sqlpackage /version:true
 # Clean up APT cache to reduce image size
 RUN rm -rf /var/lib/apt/lists/*
 
