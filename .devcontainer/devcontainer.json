@@ -21,6 +21,7 @@
     // communication works over plain HTTP inside the container.
     "remoteEnv": {
         "PATH": "${containerEnv:PATH}:/home/vscode/.aspire/bin",
+        "REMOTE_USER": "vscode",
         "DOCKER_HOST": "unix:///var/run/docker.sock",
         "ASPIRE_ALLOW_UNSECURED_TRANSPORT": "true",
         "DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS": "true"

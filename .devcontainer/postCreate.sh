@@ -45,9 +45,12 @@ echo "  sqlcmd $(/usr/local/bin/sqlcmd --version 2>/dev/null || true)"
 
 echo ""
 echo "▶ Configuring Docker socket access..."
+REMOTE_USER="${REMOTE_USER:-$(id -un)}"
 if getent group docker >/dev/null 2>&1; then
-  echo "Adding $(id -un) to docker group..."
-  sudo usermod -aG docker "$(id -un)"
+  echo "Adding ${REMOTE_USER} to docker group..."
+  sudo usermod --append --groups docker "${REMOTE_USER}"
+  sudo chown root:docker /var/run/docker.sock
+  sudo chmod 660 /var/run/docker.sock
   echo "  User added to docker group. Rebuild/reopen the container if Docker access still fails."
 else
   echo "  Docker group not found; socket access may still require sudo."
@@ -72,4 +75,3 @@ echo "  Aspire Dashboard → http://localhost:15218"
 echo "  Store (Blazor)   → http://localhost:5158"
 echo "  Products API     → http://localhost:5228"
 echo ""
-env
